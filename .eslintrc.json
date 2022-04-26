@@ -30,6 +30,9 @@
         "comma-spacing": ["error", { "before": false, "after": true }],
         "no-multi-spaces": "error",
         "brace-style": ["error", "allman"],
+        "no-trailing-spaces": "error",
+        "padded-blocks": ["error", "never"],
+        "camelcase": "error",
         "comma-dangle": ["error", "never"]
     }
 }
