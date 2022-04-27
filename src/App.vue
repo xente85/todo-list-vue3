@@ -43,6 +43,11 @@ body {
 	font-weight: 300;
 }
 
+ul {
+	margin: 0;
+	padding: 0;
+}
+
 :focus {
 	outline: 0;
 }
