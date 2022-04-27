@@ -13,7 +13,7 @@
 import { Todo } from '../interfaces/Todo'
 
 interface Props {
-  item: Todo[],
+  item: Todo,
 }
 
 const props = withDefaults(defineProps<Props>(), {})
