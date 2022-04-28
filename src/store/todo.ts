@@ -42,12 +42,12 @@ export const useTodoStore = defineStore('todo', {
         .then(response => this.list.push(response))
         .finally(() => this.loading = false)
     },
-    async changeItemStatus({ id, status }:{ id: number, status: boolean })
+    changeItemStatus({ id, status }:{ id: number, status: boolean })
     {
       const item = this.list.find(x => x.id === id)
       if (!item) return
 
-      await this.updateItem({ ...item, completed: status })
+      this.updateItem({ ...item, completed: status })
     },
     changeItemText({ id, text }:{ id: number, text: string })
     {
@@ -56,8 +56,14 @@ export const useTodoStore = defineStore('todo', {
 
       this.updateItem({ ...item, text })
     },
-    async updateItem(item: Todo)
+    updateItem(item: Todo)
     {
+      if (!item.text)
+      {
+        this.deleteItem({ id: item.id })
+        return
+      }
+
       this.preCall()
 
       fetch(`${<string>import.meta.env.VITE_BASE_URL_SERVER}/todo/${item.id}`, {
@@ -78,9 +84,9 @@ export const useTodoStore = defineStore('todo', {
     },
     changeAllItemStatus({ status }:{ status: boolean })
     {
-      this.list.forEach(async item =>
+      this.list.forEach(item =>
       {
-        await this.changeItemStatus({ id: item.id, status })
+        this.changeItemStatus({ id: item.id, status })
       })
     },
     clearCompleted()
