@@ -96,10 +96,6 @@ function clearCompleted()
 {
 	emit('clearCompleted')
 }
-
-defineExpose({
-  focus
-})
 </script>
 
 <style>
