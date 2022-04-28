@@ -16,7 +16,8 @@
     </TransitionGroup>
   </div>
   <div v-show="numItems > 0" class="footer">
-    <div class="todo-count">{{ numItemsLeftText }}</div>
+    <div class="todo-count">
+			<strong>{{ numItemsLeft }}</strong> {{ numItemsLeftText }}</div>
     <div class="filters">
       <ul>
 				<li v-for="route in routerFilter" :key="route.id">
@@ -62,14 +63,7 @@ const toggleAll = computed<boolean>({
   }
 })
 
-const numItemsLeftText = computed(() =>
-{
-	let text = `${props.numItemsLeft}`
-
-	if (props.numItemsLeft === 1) return text += ' item left'
-
-	return text += ' items left'
-})
+const numItemsLeftText = computed(() => (props.numItemsLeft === 1) ? 'item left' : 'items left')
 
 function addItem()
 {
