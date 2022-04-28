@@ -1,22 +1,26 @@
 <template>
+  <p v-if="store.errorMsg">{{ store.errorMsg }}</p>
   <bTodoList
     ref="todoList"
-    :list="filterList"
-    :numItemsLeft="numItemsLeft"
+    :list="store.filterList"
+    :numItems="store.list.length"
+    :numItemsLeft="store.numItemsLeft"
     :routerFilter="routerFilter"
-    @addItem="addItem"
-    @changeAllItemStatus="changeAllItemStatus"
-    @changeItemStatus="changeItemStatus"
-    @changeItemText="changeItemText"
-    @deleteItem="deleteItem"
-    @clearCompleted="clearCompleted"
+    :loading="store.loading"
+    @addItem="store.addItem"
+    @changeAllItemStatus="store.changeAllItemStatus"
+    @changeItemStatus="store.changeItemStatus"
+    @changeItemText="store.changeItemText"
+    @deleteItem="store.deleteItem"
+    @clearCompleted="store.clearCompleted"
   />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { Todo, RouterItem } from '../interfaces'
+import { watch } from 'vue'
+import { RouterItem } from '../interfaces'
 import bTodoList from '../base/b-todoList.vue'
+import { useTodoStore } from '../store/todo'
 
 interface Props {
   active: boolean,
@@ -28,13 +32,15 @@ const props = withDefaults(defineProps<Props>(), {
   completed: true
 })
 
-const list = ref<Todo[]>([])
-const loading = ref<boolean>(true)
-const errorMsg = ref<string>('')
-const todoList = ref<typeof bTodoList>()
+const store = useTodoStore()
 
-const numItemsLeft = computed(() => list.value.filter(x => !x.completed).length)
-const filterList = computed(() => list.value.filter(x => (props.completed && props.active) || x.completed === props.completed))
+store.filterActive = props.active
+watch(() => props.active, () => store.filterActive = props.active)
+
+store.filterComplete = props.completed
+watch(() => props.completed, () => store.filterComplete = props.completed)
+
+store.getTodoList()
 
 const routerFilter: RouterItem[] = [
   {
@@ -53,124 +59,6 @@ const routerFilter: RouterItem[] = [
     label: 'Completed'
   }
 ]
-
-focus()
-getTodoList()
-
-function focus()
-{
-  if (todoList.value) todoList.value.focus()
-}
-
-async function getTodoList()
-{
-  loading.value = true
-
-  fetch(`${<string>import.meta.env.VITE_BASE_URL_SERVER}/todo`)
-    .then((res) =>
-    {
-      return res.json()
-    })
-    .catch((error) =>
-    {
-      errorMsg.value = error
-    })
-    .then((response) =>
-    {
-      loading.value = false
-      list.value = response
-    })
-    .finally(() => loading.value = false)
-}
-
-function addItem({ text }:{ text: string })
-{
-  console.log('addItem', { text })
-}
-
-function changeItemStatus({ id, status }:{ id: number, status: boolean })
-{
-  console.log('changeItemStatus', { id, status })
-  /*
-  loading.value = true
-
-  fetch(`${<string>import.meta.env.VITE_BASE_URL_SERVER}/todo`)
-    .then((res) =>
-    {
-      return res.json()
-    })
-    .catch((error) =>
-    {
-      errorMsg.value = error
-    })
-    .then((response) =>
-    {
-      loading.value = false
-      list.value = response
-    })
-    .finally(() => loading.value = false)
-  */
-}
-
-function changeItemText({ id, text }:{ id: number, text: string })
-{
-  console.log('changeItemText', { id, text })
-}
-
-function changeAllItemStatus({ status }:{ status: boolean })
-{
-  console.log('changeAllItemStatus', { status })
-
-  /*
-  loading.value = true
-
-  fetch(`${<string>import.meta.env.VITE_BASE_URL_SERVER}/todo`)
-    .then((res) =>
-    {
-      return res.json()
-    })
-    .catch((error) =>
-    {
-      errorMsg.value = error
-    })
-    .then((response) =>
-    {
-      loading.value = false
-      list.value = response
-    })
-    .finally(() => loading.value = false)
-  */
-}
-
-function deleteItem({ id }:{ id: number })
-{
-  console.log('deleteItem', { id })
-}
-
-function clearCompleted()
-{
-  console.log('clearCompleted')
-  /*
-  loading.value = true
-
-  fetch(`${<string>import.meta.env.VITE_BASE_URL_SERVER}/todo`)
-    .then((res) =>
-    {
-      return res.json()
-    })
-    .catch((error) =>
-    {
-      errorMsg.value = error
-    })
-    .then((response) =>
-    {
-      loading.value = false
-      list.value = response
-    })
-    .finally(() => loading.value = false)
-  */
-}
-
 </script>
 
 <style>
