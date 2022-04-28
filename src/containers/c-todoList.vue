@@ -4,8 +4,10 @@
     :list="filterList"
     :numItemsLeft="numItemsLeft"
     :routerFilter="routerFilter"
+    @addItem="addItem"
     @changeAllItemStatus="changeAllItemStatus"
     @changeItemStatus="changeItemStatus"
+    @changeItemText="changeItemText"
     @deleteItem="deleteItem"
     @clearCompleted="clearCompleted"
   />
@@ -81,6 +83,11 @@ async function getTodoList()
     .finally(() => loading.value = false)
 }
 
+function addItem({ text }:{ text: string })
+{
+  console.log('addItem', { text })
+}
+
 function changeItemStatus({ id, status }:{ id: number, status: boolean })
 {
   console.log('changeItemStatus', { id, status })
@@ -103,6 +110,11 @@ function changeItemStatus({ id, status }:{ id: number, status: boolean })
     })
     .finally(() => loading.value = false)
   */
+}
+
+function changeItemText({ id, text }:{ id: number, text: string })
+{
+  console.log('changeItemText', { id, text })
 }
 
 function changeAllItemStatus({ status }:{ status: boolean })

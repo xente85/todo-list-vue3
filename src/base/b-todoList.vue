@@ -1,5 +1,5 @@
 <template>
-  <input ref="newTodo" class="new-todo" type="text"/>
+  <input v-model="newItem" v-focus-edit="true" class="new-todo" type="text" @keydown.enter="addItem" @keydown.esc="newItem = ''"/>
   <div v-show="list.length > 0" class="main">
     <input v-model="toggleAll" class="toggle-all edit" type="checkbox" id="toggleAll">
     <label for="toggleAll"></label>
@@ -9,13 +9,14 @@
 				:key="item.id"
 				:item="item"
 				@changeItemStatus="changeItemStatus"
+				@changeItemText="changeItemText"
 				@deleteItem="deleteItem"
 			/>
     </TransitionGroup>
   </div>
   <div v-show="list.length > 0" class="footer">
     <div class="todo-count">
-      {{ numItemsLeft }} items left
+      {{ numItemsLeftText }}
     </div>
     <div class="filters">
       <ul>
@@ -31,8 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from '@vue/reactivity'
+import { computed, ref } from 'vue'
 import { Todo, RouterItem } from '../interfaces'
+import { vFocusEdit } from '../directives'
 import bTodoListItem from './b-todoListItem.vue'
 
 interface Props {
@@ -43,7 +45,9 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {})
 
-const emit = defineEmits(['changeAllItemStatus', 'changeItemStatus', 'deleteItem', 'clearCompleted'])
+const newItem = ref<string>('')
+
+const emit = defineEmits(['changeAllItemStatus', 'addItem', 'changeItemStatus', 'changeItemText', 'deleteItem', 'clearCompleted'])
 
 const toggleAll = computed<boolean>({
   get ()
@@ -55,6 +59,30 @@ const toggleAll = computed<boolean>({
     emit('changeAllItemStatus', { status })
   }
 })
+
+const numItemsLeftText = computed(() =>
+{
+	let text = `${props.numItemsLeft}`
+
+	if (props.numItemsLeft === 1)
+	{
+		text += ' item left'
+		return
+	}
+
+	return text += ' items left'
+})
+
+function addItem()
+{
+	emit('addItem', { text: newItem.value })
+	newItem.value = ''
+}
+
+function changeItemText({ id, text }:{ id: number, text: string })
+{
+	emit('changeItemText', { id, text })
+}
 
 function changeItemStatus({ id, status }:{ id: number, status: boolean })
 {
