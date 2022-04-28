@@ -73,6 +73,7 @@ const numItemsLeftText = computed(() =>
 
 function addItem()
 {
+	if (!newItem.value) return
 	emit('addItem', { text: newItem.value })
 	newItem.value = ''
 }
