@@ -1,6 +1,7 @@
 <template>
   <input v-model="newItem" v-focus-edit="true" class="new-todo" type="text" @keydown.enter="addItem" @keydown.esc="newItem = ''"/>
-  <div v-show="list.length > 0" class="main">
+  <bLoaderBar v-show="loading" class="loader"/>
+	<div v-show="numItems > 0" class="main">
     <input v-model="toggleAll" class="toggle-all edit" type="checkbox" id="toggleAll">
     <label for="toggleAll"></label>
     <TransitionGroup class="todo-list" name="list" tag="ul">
@@ -14,10 +15,8 @@
 			/>
     </TransitionGroup>
   </div>
-  <div v-show="list.length > 0" class="footer">
-    <div class="todo-count">
-      {{ numItemsLeftText }}
-    </div>
+  <div v-show="numItems > 0" class="footer">
+    <div class="todo-count">{{ numItemsLeftText }}</div>
     <div class="filters">
       <ul>
 				<li v-for="route in routerFilter" :key="route.id">
@@ -27,7 +26,7 @@
 				</li>
       </ul>
     </div>
-    <button class="clear-completed" @click="clearCompleted">Clear completed</button>
+    <button v-if="numItems !== numItemsLeft" class="clear-completed" @click="clearCompleted">Clear completed</button>
   </div>
 </template>
 
@@ -36,11 +35,14 @@ import { computed, ref } from 'vue'
 import { Todo, RouterItem } from '../interfaces'
 import { vFocusEdit } from '../directives'
 import bTodoListItem from './b-todoListItem.vue'
+import bLoaderBar from './b-loaderBar.vue'
 
 interface Props {
   list: Todo[],
-  numItemsLeft: number,
-	routerFilter: RouterItem[]
+  numItems: number,
+	numItemsLeft: number,
+	routerFilter: RouterItem[],
+	loading: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {})
@@ -64,11 +66,7 @@ const numItemsLeftText = computed(() =>
 {
 	let text = `${props.numItemsLeft}`
 
-	if (props.numItemsLeft === 1)
-	{
-		text += ' item left'
-		return
-	}
+	if (props.numItemsLeft === 1) return text += ' item left'
 
 	return text += ' items left'
 })
@@ -416,5 +414,10 @@ html .clear-completed:active {
 	.filters {
 		bottom: 10px;
 	}
+}
+
+.loader {
+	position: absolute;
+	top: 64px;
 }
 </style>
