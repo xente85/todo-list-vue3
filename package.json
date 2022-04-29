@@ -7,7 +7,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .ts,.vue",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest"
   },
   "dependencies": {
     "pinia": "^2.0.13",
@@ -15,16 +16,18 @@
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
-    "@testing-library/vue": "^6.5.1",
+    "@testing-library/vue": "^6.4.2",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "@vitejs/plugin-vue": "^2.3.1",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^8.7.1",
+    "happy-dom": "^3.1.0",
     "prettier": "^2.6.2",
     "typescript": "^4.5.4",
     "vite": "^2.9.5",
+    "vitest": "^0.10.0",
     "vue-eslint-parser": "^8.3.0",
     "vue-tsc": "^0.34.7"
   }
