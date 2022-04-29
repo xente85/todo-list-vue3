@@ -1,5 +1,5 @@
 <template>
-  <input v-model="newItem" v-focus-input="true" class="new-todo" type="text" @keydown.enter="addItem" @keydown.esc="newItem = ''"/>
+  <input v-model="newItem" v-focus-input="true" @keydown.enter="addItem" @keydown.esc="newItem = ''" class="new-todo" type="text" placeholder="New todo"/>
   <bLoaderBar v-show="loading" class="loader"/>
 	<div v-show="numItems > 0" class="main">
     <input v-model="toggleAll" class="toggle-all edit" type="checkbox" id="toggleAll">
