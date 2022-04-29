@@ -5,14 +5,14 @@
       <label @dblclick="modeEdit">{{ item.text }}</label>
       <button class="destroy" @click="deleteItem"></button>
     </div>
-    <input v-if="editing" v-model="textEdit" v-focus-edit="editing" type="text" class="edit" @blur="stopEdit" @keydown.enter="stopEdit" @keydown.esc="cancelEdit">
+    <input v-if="editing" v-model="textEdit" v-focus-input="editing" type="text" class="edit" @blur="stopEdit" @keydown.enter="stopEdit" @keydown.esc="cancelEdit">
   </li>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Todo } from '../interfaces'
-import { vFocusEdit } from '../directives'
+import { vFocusInput } from '../directives'
 
 interface Props {
   item: Todo,

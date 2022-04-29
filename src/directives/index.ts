@@ -1,4 +1,4 @@
-export const vFocusEdit = {
+export const vFocusInput = {
   mounted: (el, binding) =>
   {
     if (binding.value)
