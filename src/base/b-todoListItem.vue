@@ -20,7 +20,11 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {})
 
-const emit = defineEmits(['changeItemStatus', 'changeItemText', 'deleteItem'])
+const emit = defineEmits<{
+  (e: 'changeItemStatus', { id, status }:{ id: number, status: boolean }): void
+  (e: 'changeItemText', { id, text }:{ id: number, text: string }): void
+	(e: 'deleteItem', { id }:{ id: number }): void
+}>()
 
 const editing = ref<boolean>(false)
 const textEdit = ref<string>(props.item.text)

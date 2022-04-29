@@ -50,7 +50,14 @@ const props = withDefaults(defineProps<Props>(), {})
 
 const newItem = ref<string>('')
 
-const emit = defineEmits(['changeAllItemStatus', 'addItem', 'changeItemStatus', 'changeItemText', 'deleteItem', 'clearCompleted'])
+const emit = defineEmits<{
+  (e: 'changeAllItemStatus', { status }:{ status: boolean }): void
+  (e: 'addItem', { text }:{ text: string }): void
+	(e: 'changeItemStatus', { id, status }:{ id: number, status: boolean }): void
+	(e: 'changeItemText', { id, text }:{ id: number, text: string }): void
+	(e: 'deleteItem', { id }:{ id: number }): void
+	(e: 'clearCompleted'): void
+}>()
 
 const toggleAll = computed<boolean>({
   get ()
