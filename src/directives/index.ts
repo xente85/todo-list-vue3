@@ -1,11 +1,6 @@
-import { Ref } from 'vue'
-
-export const vFocusInput = {
-  mounted: (el: HTMLElement, binding: Ref) =>
+export const vFocus = {
+  mounted: (el: HTMLElement) =>
   {
-    if (binding.value)
-    {
-      el.focus()
-    }
+    el.focus()
   }
 }

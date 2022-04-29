@@ -1,5 +1,5 @@
 <template>
-  <input v-model="newItem" v-focus-input="true" @keydown.enter="addItem" @keydown.esc="newItem = ''" class="new-todo" type="text" placeholder="New todo"/>
+  <input v-model="newItem" v-focus @keydown.enter="addItem" @keydown.esc="newItem = ''" class="new-todo" type="text" placeholder="New todo"/>
   <bLoaderBar v-show="loading" class="loader"/>
 	<div v-show="numItems > 0" class="main">
     <input v-model="toggleAll" class="toggle-all edit" type="checkbox" id="toggleAll">
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Todo, RouterItem } from '../interfaces'
-import { vFocusInput } from '../directives'
+import { vFocus } from '../directives'
 import bTodoListItem from './b-todoListItem.vue'
 import bLoaderBar from './b-loaderBar.vue'
 
