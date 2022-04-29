@@ -1,6 +1,6 @@
 
 import { createWebHistory, createRouter } from 'vue-router'
-import pTodoVue from '../pages/p-todoList.vue'
+import pTodoVue from '../pages/p-todo.vue'
 import pNotFoundVue from '../pages/p-notFound.vue'
 
 const routes = [

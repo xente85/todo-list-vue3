@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import cTodoList from '../containers/c-todoList.vue'
+import cTodoList from '../containers/c-todo.vue'
 
 interface Props {
   active: boolean,
