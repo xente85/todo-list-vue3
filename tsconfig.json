@@ -8,17 +8,11 @@
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "allowJs": true,
-    "types": ["vite/client"],
-    "noImplicitAny": false,
-    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "test"
-  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
