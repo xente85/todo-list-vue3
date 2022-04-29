@@ -1,5 +1,7 @@
+import { Ref } from 'vue'
+
 export const vFocusInput = {
-  mounted: (el, binding) =>
+  mounted: (el: HTMLElement, binding: Ref) =>
   {
     if (binding.value)
     {
