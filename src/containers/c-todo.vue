@@ -1,5 +1,4 @@
 <template>
-  <p v-if="store.errorMsg">{{ store.errorMsg }}</p>
   <bTodoList
     ref="todoList"
     :list="store.filterList"
@@ -14,6 +13,7 @@
     @deleteItem="store.deleteItem"
     @clearCompleted="store.clearCompleted"
   />
+  <p v-if="store.errorMsg">{{ store.errorMsg }}</p>
 </template>
 
 <script setup lang="ts">
