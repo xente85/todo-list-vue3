@@ -3,35 +3,55 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { fireEvent, render } from '@testing-library/vue'
 import bTodoListItem from '../../src/base/b-todoListItem.vue'
 import { Todo } from '../../src/interfaces'
 
-const mockItem: Todo = {
-  id: 1,
-  text: 'Item 1',
-  completed: false
-}
-
 describe('bTodoListItem', () =>
 {
-  it('Should render', () =>
+  const mockItem: Todo = {
+    id: 1,
+    text: 'Item 1',
+    completed: true
+  }
+
+  it('Should render', async () =>
   {
-    const wrapper = mount(bTodoListItem, { props: { item: mockItem } })
-    expect(wrapper.text()).contains(mockItem.text)
+    const { getByText, container } = await render(bTodoListItem, { props: { item: mockItem } })
+    expect(getByText(mockItem.text)).toBeTruthy()
+
+    const toggleStatus = container.querySelector('.toggle')
+    expect(toggleStatus.checked).toEqual(mockItem.completed)
+
+    const destroy = container.querySelector('.destroy')
+    expect(destroy).toBeTruthy()
   })
 
-  it('Emit item', async () =>
+  it('Item destroy', async () =>
   {
-    const wrapper = mount(bTodoListItem, { props: { item: mockItem } })
-    wrapper.vm.$emit('changeItemStatus', { id: mockItem.id, status: true })
-    wrapper.vm.$emit('changeItemText', { id: mockItem.id, text: 'new text' })
-    wrapper.vm.$emit('deleteItem', { id: mockItem.id })
+    const { container, emitted } = await render(bTodoListItem, { props: { item: mockItem } })
 
-    // await wrapper.vm.$nextTick()
+    const destroy = container.querySelector('.destroy')
+    await fireEvent.click(destroy)
+    const emit = emitted()
+    expect(emit).toHaveProperty('deleteItem')
+    expect(emit.deleteItem).toHaveLength(1)
+    expect(emit.deleteItem[0][0]).toHaveProperty('id')
+    expect(emit.deleteItem[0][0].id).equals(mockItem.id)
+  })
 
-    expect(wrapper.emitted().changeItemStatus).toBeTruthy()
-    expect(wrapper.emitted().changeItemText).toBeTruthy()
-    expect(wrapper.emitted().deleteItem).toBeTruthy()
+  it('Item change status', async () =>
+  {
+    const { container, emitted } = await render(bTodoListItem, { props: { item: mockItem } })
+
+    const toggleStatus = container.querySelector('.toggle')
+    await fireEvent.change(toggleStatus, { target: { checked: !mockItem.completed } })
+    const emitStatus = emitted()
+    expect(emitStatus).toHaveProperty('changeItemStatus')
+    expect(emitStatus.changeItemStatus).toHaveLength(1)
+    expect(emitStatus.changeItemStatus[0][0]).toHaveProperty('id')
+    expect(emitStatus.changeItemStatus[0][0].id).equals(mockItem.id)
+    expect(emitStatus.changeItemStatus[0][0]).toHaveProperty('status')
+    expect(emitStatus.changeItemStatus[0][0].status).equals(!mockItem.completed)
   })
 })
