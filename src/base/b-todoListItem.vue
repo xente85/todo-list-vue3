@@ -5,7 +5,7 @@
       <label @dblclick="modeEdit">{{ item.text }}</label>
       <button class="destroy" @click="deleteItem"></button>
     </div>
-    <input v-if="editing" v-model="textEdit" v-focus type="text" class="edit" @blur="stopEdit" @keydown.enter="stopEdit" @keydown.esc="cancelEdit">
+    <input v-model="textEdit" v-focus="editing" type="text" class="edit" @blur="stopEdit" @keydown.enter="stopEdit" @keydown.esc="cancelEdit">
   </li>
 </template>
 
