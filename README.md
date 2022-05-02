@@ -19,7 +19,7 @@ npm install
 ```
 2. Start Fake REST API
 ```bash
-npx json-server --watch db.json --port 3100
+npx json-server --watch db.json --port 3100 --delay 200
 ```
 3. Run vite
 ```bash
